@@ -46,3 +46,13 @@ class FluxerBot:
         @self.__bot.command(name=name)
         async def command(ctx) -> None:
             await function(ctx)
+
+    async def send_message(self, channel_id: int, message: str) -> None:
+        """
+        Let the bot send a message to a specific channel.
+        This only works if the bot has access to the channel.
+        :param channel_id: Fluxer channel id
+        :param message: Message to send
+        """
+        channel: fluxer.Channel = await self.__bot.fetch_channel(channel_id)
+        await channel.send(message)
