@@ -5,6 +5,7 @@ from threading import Thread
 from dotenv import load_dotenv
 import os
 
+import epicgames
 from fluxer_bot import FluxerBot
 
 
@@ -30,7 +31,15 @@ def main() -> None:
 
 def send_message(bot: FluxerBot, event_loop: AbstractEventLoop) -> None:
     channel_id = int(os.getenv("CHANNEL_ID"))
-    asyncio.run_coroutine_threadsafe(bot.send_message(channel_id, "Hello World!"), event_loop)
+    message: str = build_free_games_message()
+    asyncio.run_coroutine_threadsafe(bot.send_message(channel_id, message), event_loop)
+
+
+def build_free_games_message() -> str:
+    message = "### Free Games:\n"
+    for game in epicgames.get_free_games():
+        message += f"**{game['title']}**\n{game['description']}\n\n"
+    return message.strip()
 
 
 if __name__ == "__main__":
