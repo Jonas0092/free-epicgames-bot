@@ -21,3 +21,12 @@ Tested with Python 3.13.5.
 
 ## Running the bot
 Run `main.py` located in the `src` directory
+
+## Docker
+The bot can also be run using Docker. \
+A prebuilt image is available on [Docker Hub](https://hub.docker.com/r/jonas0092/free-epicgames-bot). \
+Alternatively, you can build the image by yourself using the provided Dockerfile as follows: \
+`docker build -t <image-name> .` \
+You can run the image with this command: \
+`docker run -e BOT_TOKEN=<bot-token> -e CHANNEL_ID=<channel-id> --name <container-name> -t <image-name>`
+where `<image-name>` is `jonas0092/free-epicgames-bot` or the name you specified
