@@ -179,3 +179,6 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# free games file
+src/free_games.txt

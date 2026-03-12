@@ -37,7 +37,7 @@ def send_message(bot: FluxerBot, event_loop: AbstractEventLoop) -> None:
 
 def build_free_games_message() -> str:
     message = "### Free Games:\n"
-    for game in epicgames.get_free_games():
+    for game in epicgames.get_new_free_games():
         message += f"**{game['title']}**\n{game['description']}\n\n"
     return message.strip()
 
