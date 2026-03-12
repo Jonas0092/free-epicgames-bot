@@ -8,6 +8,10 @@ import epicgames
 from fluxer_bot import FluxerBot
 
 
+# Default interval between checks for new free games (in seconds)
+DEFAULT_CHECK_INTERVAL: int = 3600
+
+
 def main() -> None:
     # Load environment variables from .env file
     load_dotenv()
@@ -18,10 +22,8 @@ def main() -> None:
     event_loop: AbstractEventLoop = asyncio.new_event_loop()
     asyncio.set_event_loop(event_loop)
 
-    # Get interval between free game checks, default is 3600 seconds (= 1 hour)
-    check_interval: int = int(os.getenv("FREE_GAMES_CHECK_INTERVAL"))
-    if not check_interval or check_interval <= 0:
-        check_interval = 3600
+    # Get interval between free game checks
+    check_interval: int = get_check_interval()
 
     # Start free game check loop
     check_loop_thread: Thread = Thread(target=check_free_games_loop, args=(bot, check_interval, event_loop))
@@ -30,6 +32,18 @@ def main() -> None:
     # Start bot
     token: str = os.getenv("BOT_TOKEN")
     bot.start(token, event_loop)
+
+
+def get_check_interval() -> int:
+    check_interval_var: str | None = os.getenv("FREE_GAMES_CHECK_INTERVAL")
+    if not check_interval_var:
+        return DEFAULT_CHECK_INTERVAL
+
+    check_interval: int = int(check_interval_var)
+    if check_interval <= 0:
+        return DEFAULT_CHECK_INTERVAL
+
+    return check_interval
 
 
 async def check_free_games_loop_async(bot: FluxerBot, check_interval: int) -> None:
